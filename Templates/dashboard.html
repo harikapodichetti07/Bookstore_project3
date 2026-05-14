@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="mb-4">📊 Dashboard</h2>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-3">
+    <div class="card text-white bg-primary shadow">
+      <div class="card-body text-center">
+        <h6 class="card-title">Total Customers</h6>
+        <h2 class="fw-bold">{{ total_customers }}</h2>
+        <a href="/customers" class="text-white small">View All →</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-success shadow">
+      <div class="card-body text-center">
+        <h6 class="card-title">Total Books</h6>
+        <h2 class="fw-bold">{{ total_books }}</h2>
+        <a href="/books" class="text-white small">View All →</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-warning shadow">
+      <div class="card-body text-center">
+        <h6 class="card-title">Total Orders</h6>
+        <h2 class="fw-bold">{{ total_orders }}</h2>
+        <a href="/orders" class="text-white small">View All →</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-danger shadow">
+      <div class="card-body text-center">
+        <h6 class="card-title">Total Revenue</h6>
+        <h2 class="fw-bold">${{ total_revenue }}</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-header bg-secondary text-white">
+        Average Book Price
+      </div>
+      <div class="card-body text-center">
+        <h3 class="fw-bold text-secondary">${{ avg_book_price }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-header bg-dark text-white">
+        🏆 Top 3 Customers by Orders
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for customer in top_customers %}
+        <li class="list-group-item d-flex justify-content-between">
+          <span>{{ customer.name }}</span>
+          <span class="badge bg-primary rounded-pill">{{ customer.order_count }} orders</span>
+        </li>
+        {% else %}
+        <li class="list-group-item text-muted">No orders yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

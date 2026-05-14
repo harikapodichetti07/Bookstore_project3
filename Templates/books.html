@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>📖 Books</h2>
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">
+    + Add Book
+  </button>
+</div>
+
+<table class="table table-bordered table-hover shadow-sm">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Price</th>
+      <th>Created Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for b in books %}
+    <tr>
+      <td>{{ b.book_id }}</td>
+      <td>{{ b.title }}</td>
+      <td>{{ b.author }}</td>
+      <td>${{ b.price }}</td>
+      <td>{{ b.created_date }}</td>
+      <td>
+        <button class="btn btn-sm btn-warning"
+          data-bs-toggle="modal"
+          data-bs-target="#editBookModal{{ b.book_id }}">
+          Edit
+        </button>
+        <a href="/books/delete/{{ b.book_id }}"
+           class="btn btn-sm btn-danger"
+           onclick="return confirm('Delete this book?')">
+          Delete
+        </a>
+      </td>
+    </tr>
+
+    <!-- Edit Book Modal -->
+    <div class="modal fade" id="editBookModal{{ b.book_id }}" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Book</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <form action="/books/edit/{{ b.book_id }}" method="POST">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" name="title" class="form-control"
+                       value="{{ b.title }}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Author</label>
+                <input type="text" name="author" class="form-control"
+                       value="{{ b.author }}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Price ($)</label>
+                <input type="number" name="price" class="form-control"
+                       step="0.01" min="0" value="{{ b.price }}" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <tr><td colspan="6" class="text-center text-muted">No books yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Add Book Modal -->
+<div class="modal fade" id="addBookModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Book</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form action="/books/add" method="POST">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" name="title" class="form-control"
+                   placeholder="Book title" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Author</label>
+            <input type="text" name="author" class="form-control"
+                   placeholder="Author name" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Price ($)</label>
+            <input type="number" name="price" class="form-control"
+                   step="0.01" min="0" placeholder="29.99" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Add Book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
